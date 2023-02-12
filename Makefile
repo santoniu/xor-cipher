@@ -13,9 +13,9 @@ all: clean
 
 	# binaries for arm64
 	[ -d $(CURDIR)/arm64 ] || mkdir -p $(CURDIR)/arm64
-	gcc $(CFLAGS) -o $(CURDIR)/arm64/xor_algo.o -c $(CURDIR)/xor_algo.c
-	gcc $(CFLAGS) -o $(CURDIR)/arm64/xor_file.o -c $(CURDIR)/xor_file.c
-	gcc $(CFLAGS) -o $(CURDIR)/arm64/xor_cipher $(CURDIR)/arm64/xor_file.o $(CURDIR)/arm64/xor_algo.o
+	aarch64-linux-gnu-gcc $(CFLAGS) -o $(CURDIR)/arm64/xor_algo.o -c $(CURDIR)/xor_algo.c
+	aarch64-linux-gnu-gcc $(CFLAGS) -o $(CURDIR)/arm64/xor_file.o -c $(CURDIR)/xor_file.c
+	aarch64-linux-gnu-gcc $(CFLAGS) -o $(CURDIR)/arm64/xor_cipher $(CURDIR)/arm64/xor_file.o $(CURDIR)/arm64/xor_algo.o
 
 
 clean:
