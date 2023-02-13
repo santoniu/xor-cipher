@@ -16,8 +16,11 @@ int main(int argc, char **argv) {
 
     int xor_key_interval_start = 0;
     int xor_key_interval_length = XOR_KEY_LENGTH_IN_BYTES;
-    while ( (opt = getopt(argc, argv, "cdg:hl:s:")) != -1 ) {
+    while ( (opt = getopt(argc, argv, "cg:hl:s:")) != -1 ) {
         switch (opt) {
+	    case 'c':
+		fprintf(stdout, "XOR key CRC: 0x%016X\n", xor_algo_key_crc());
+		exit(EXIT_SUCCESS);
 	    case 'l':
 		xor_key_interval_length = atoi(optarg);
 		break;
@@ -86,7 +89,13 @@ int main(int argc, char **argv) {
 	    unlink(tmp_filename);
 	    exit(EXIT_FAILURE);
 	}
-	write(fout, &io_buffer, read_bytes);
+	if ( write(fout, &io_buffer, read_bytes) < 0 ) {
+	    fprintf(stderr, "ERROR: write() failed\n");
+	    close(fin);
+	    close(fout);
+	    unlink(tmp_filename);
+	    exit(EXIT_FAILURE);
+	}
     }
 
     close(fin);
@@ -100,6 +109,4 @@ int main(int argc, char **argv) {
 
     rename(tmp_filename, filename);
 
-    fprintf(stdout, "XOR key CRC: 0x%016X\n", xor_algo_key_crc());
-    exit(EXIT_SUCCESS);
 }
