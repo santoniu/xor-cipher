@@ -38,13 +38,12 @@ int main(int argc, char **argv) {
 
     /* sanity */
     if ( (xor_key_interval_start > 0) && (xor_key_interval_length > (XOR_KEY_LENGTH_IN_BYTES-xor_key_interval_start)) ) {
-	fprintf(stderr, "ERROR: interval of %u bytes, starting at %u, is larger than our key\n", xor_key_interval_length, xor_key_interval_start);
-	exit(EXIT_FAILURE);
+	fprintf(stderr, "WARNING: interval of %u bytes, starting at %u, is larger than our key, adjusting interval length.\n", xor_key_interval_length, xor_key_interval_start);
+	xor_key_interval_length = XOR_KEY_LENGTH_IN_BYTES-xor_key_interval_start;
     }
 
     if ( xor_key_interval_length == 0 ) {
-	fprintf(stderr, "ERROR: wrong interval length, must be positive.\n");
-	exit(EXIT_FAILURE);
+	xor_key_interval_length = XOR_KEY_LENGTH_IN_BYTES-xor_key_interval_start;
     }
 
     const char *filename = argv[optind];
@@ -100,5 +99,6 @@ int main(int argc, char **argv) {
 
     rename(tmp_filename, filename);
 
+    fprintf(stdout, "XOR key CRC: 0x%016X\n", xor_algo_key_crc());
     exit(EXIT_SUCCESS);
 }

@@ -36,8 +36,7 @@ int main(int argc, char **argv) {
     printf("#define\tXOR_ALGO_ERROR_BUFFER_NULL\t\t1\n");
     printf("#define\tXOR_ALGO_ERROR_BUFFER_INVALID_LENGTH\t2\n");
     printf("#define\tXOR_ALGO_ERROR_INTERVAL_START\t\t3\n");
-    printf("#define\tXOR_ALGO_ERROR_LEN\t\t4\n");
-    printf("#define\tXOR_ALGO_ERROR_INTERVAL\t\t5\n\n");
+    printf("#define\tXOR_ALGO_ERROR_INTERVAL\t\t4\n\n");
     printf("/* Random generated XOR key, %u bytes long */\n", xor_key_length_in_bytes);
     printf("#define\tXOR_KEY_LENGTH_IN_BYTES\t%u\n", xor_key_length_in_bytes);
     printf("#define\tXOR_KEY_BYTES\t\t{");
@@ -47,7 +46,9 @@ int main(int argc, char **argv) {
 	if ( i <= (xor_key_length_in_bytes-2) ) printf(", ");
     }
     printf("}\n\n");
-    printf("int xor_algo(void *, long long int, unsigned int, unsigned int);\n");
+    printf("unsigned int xor_algo(void *, long long int, unsigned int, unsigned int);\n");
+    printf("unsigned int xor_algo_key_crc(void);\n");
+
     printf("#endif /* !defined(_XOR_ALGO_HEADER) */\n");
 
     exit(EXIT_SUCCESS);
