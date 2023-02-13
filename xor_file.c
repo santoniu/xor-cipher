@@ -77,8 +77,9 @@ int main(int argc, char **argv) {
 
     unsigned char io_buffer[1024];
     int read_bytes;
+    unsigned int xor_key_position = 0;
     while ( (read_bytes = read(fin, &io_buffer, sizeof(io_buffer))) > 0 ) {
-	if ( xor_algo(&io_buffer, read_bytes, xor_key_interval_start, xor_key_interval_length) != XOR_ALGO_OK ) {
+	if ( xor_algo(&io_buffer, read_bytes, xor_key_interval_start, xor_key_interval_length, &xor_key_position) != XOR_ALGO_OK ) {
 	    fprintf(stderr, "ERROR: xor_algo failed\n");
 	    close(fin);
 	    close(fout);
