@@ -2,7 +2,7 @@ CFLAGS = -g -O2 -Wall
 CC = $(CROSS_COMPILE)gcc
 STRIP = $(CROSS_COMPILE)strip
 
-all: clean
+all:
 	[ -f $(CURDIR)/xor_algo.h ] || make CROSS_COMPILE=$(CROSS_COMPILE) header
 	$(CC) $(CFLAGS) -o $(CURDIR)/xor_algo.o -c $(CURDIR)/xor_algo.c
 	$(CC) $(CFLAGS) -o $(CURDIR)/xor_file.o -c $(CURDIR)/xor_file.c
@@ -10,12 +10,9 @@ all: clean
 	$(STRIP) $(CURDIR)/xor_cipher
 
 clean:
-	rm -rf *.o 
+	rm -rf *.o $(CURDIR)/xor_algo_header_generator $(CURDIR)/xor_algo.h xor_cipher
 
-realclean: clean
-	rm -rf $(CURDIR)/xor_algo_header_generator $(CURDIR)/xor_algo.h xor_cipher
-
-header:
+header: clean
 	$(CC) -o $(CURDIR)/xor_algo_header_generator $(CURDIR)/xor_algo_header_generator.c
 	$(CURDIR)/xor_algo_header_generator > $(CURDIR)/xor_algo.h
 
