@@ -75,7 +75,7 @@ int main(int argc, char **argv) {
 	exit(EXIT_FAILURE);
     }
 
-    char io_buffer[1024];
+    unsigned char io_buffer[1024];
     int read_bytes;
     while ( (read_bytes = read(fin, &io_buffer, sizeof(io_buffer))) > 0 ) {
 	if ( xor_algo(&io_buffer, read_bytes, xor_key_interval_start, xor_key_interval_length) != XOR_ALGO_OK ) {

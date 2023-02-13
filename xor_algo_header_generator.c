@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
     printf("#define\tXOR_KEY_BYTES\t\t{");
 
     for (unsigned i = 0; i < xor_key_length_in_bytes; i++) {
-	printf("0x%02x", ((unsigned char)rand()| i));
+	printf("0x%02x", ((unsigned char)rand() | i));
 	if ( i <= (xor_key_length_in_bytes-2) ) printf(", ");
     }
     printf("}\n\n");
