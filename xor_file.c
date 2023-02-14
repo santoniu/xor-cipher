@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
         switch (opt) {
 	    case 'c':
 		fprintf(stdout, "XOR key CRC: 0x%016X\n", xor_algo_key_crc());
-		exit(EXIT_SUCCESS);
+		break;
 	    case 'l':
 		xor_key_interval_length = atoi(optarg);
 		break;
