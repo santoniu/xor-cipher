@@ -5,8 +5,8 @@
 #include "xor_algo.h"
 
 unsigned int xor_algo(void *buffer, long long int len, unsigned int xor_key_interval_start, unsigned int xor_key_interval_len, unsigned int *xor_key_offset) {
-    if ( buffer == 0 )
-	return XOR_ALGO_ERROR_BUFFER_NULL;
+    if ( buffer == 0 ) /* NULL buffer ptr */
+	return XOR_ALGO_OK;
 
     if ( len <= 0 )
 	return XOR_ALGO_ERROR_BUFFER_INVALID_LENGTH;

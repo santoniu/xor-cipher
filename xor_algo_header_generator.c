@@ -33,17 +33,18 @@ int main(int argc, char **argv) {
     printf("#if !defined(_XOR_ALGO_HEADER)\n");
     printf("#define _XOR_ALGO_HEADER\n\n");
     printf("#define\tXOR_ALGO_OK\t\t\t\t0\n");
-    printf("#define\tXOR_ALGO_ERROR_BUFFER_NULL\t\t1\n");
-    printf("#define\tXOR_ALGO_ERROR_BUFFER_INVALID_LENGTH\t2\n");
+    printf("#define\tXOR_ALGO_ERROR_BUFFER_INVALID_LENGTH\t1\n");
+    printf("#define\tXOR_ALGO_HEADER_MAGIC\t\t\t0xDEADBEEF\n\n");
     printf("/* Random generated XOR key, %u bytes long */\n", xor_key_length_in_bytes);
-    printf("#define\tXOR_KEY_LENGTH_IN_BYTES\t%u\n", xor_key_length_in_bytes);
-    printf("#define\tXOR_KEY_BYTES\t\t{");
+    printf("#define\tXOR_KEY_LENGTH_IN_BYTES\t\t\t%u\n", xor_key_length_in_bytes);
+    printf("#define\tXOR_KEY_BYTES\t\t\t\t{");
 
     for (unsigned i = 0; i < xor_key_length_in_bytes; i++) {
 	printf("0x%02x", ((unsigned char)rand() | i));
 	if ( i <= (xor_key_length_in_bytes-2) ) printf(", ");
     }
     printf("}\n\n");
+    printf("typedef struct {\n\tunsigned int xor_algo_magic;\n\tunsigned int xor_key_interval_start;\n\tunsigned int xor_key_interval_length;\n\tunsigned int xor_algo_key_crc;\n} XOR_ALGO_HEADER;\n\n");
     printf("unsigned int xor_algo(void *, long long int, unsigned int, unsigned int, unsigned int *);\n");
     printf("unsigned int xor_algo_key_crc(void);\n");
 
