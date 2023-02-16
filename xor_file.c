@@ -113,21 +113,18 @@ int main(int argc, char **argv) {
 	if ( sb_in.st_size > (off_t)sizeof(xor_algo_header) ) {
 	    read_bytes = read(fd_in, &io_buffer, sizeof(xor_algo_header));
 	    if ( read_bytes != sizeof(xor_algo_header) ) {
-		fprintf(stderr, "ERROR: can not read from input filename '%s' %d\n", input_filename, read_bytes);
+		fprintf(stderr, "ERROR: can not read from input filename '%s'\n", input_filename);
 		close(fd_in);
 		close(fd_out);
 		exit(EXIT_FAILURE);
 	    }
+	    /* copy read data into xor_algo_header and keep track of already read bytes */
 	    memcpy(&xor_algo_header, &io_buffer, sizeof(xor_algo_header));
+	    already_read_bytes = sizeof(xor_algo_header);
+
 	    /* Check XOR header magic. */
 	    if ( xor_algo_header.xor_algo_magic != XOR_ALGO_HEADER_MAGIC ) {
-		/*
-		 * No match, we are encrypting.
-		 * - move read data from xor_algo_header into io_buffer
-		 * - write XOR header into output file.
-		 */
-		already_read_bytes = sizeof(xor_algo_header);
-
+		/* no match, we are encrypting. Write XOR header into output file. */
 		xor_algo_header.xor_algo_magic = XOR_ALGO_HEADER_MAGIC;
 		xor_algo_header.xor_key_interval_start = xor_key_interval_start;
 		xor_algo_header.xor_key_interval_length = xor_key_interval_length;
@@ -153,14 +150,14 @@ int main(int argc, char **argv) {
 	}
     }
 
-    while ( (read_bytes = read(fd_in, &io_buffer[already_read_bytes], io_buffer_size)) > 0 ) {
-	if ( xor_algo(&io_buffer, read_bytes+already_read_bytes, xor_key_interval_start, xor_key_interval_length, &xor_key_position) != XOR_ALGO_OK ) {
+    while ( (read_bytes = read(fd_in, &io_buffer[already_read_bytes], io_buffer_size - already_read_bytes)) > 0 ) {
+	if ( xor_algo(&io_buffer, read_bytes + already_read_bytes, xor_key_interval_start, xor_key_interval_length, &xor_key_position) != XOR_ALGO_OK ) {
 	    fprintf(stderr, "ERROR: xor_algo failed\n");
 	    close(fd_in);
 	    close(fd_out);
 	    exit(EXIT_FAILURE);
 	}
-	if ( write(fd_out, &io_buffer, read_bytes+already_read_bytes) < 0 ) {
+	if ( write(fd_out, &io_buffer, read_bytes + already_read_bytes) < 0 ) {
 	    if ( input_filename == output_filename )
 		fprintf(stderr, "ERROR: can not write into output filename '%s'. Your original file might have been lost.\n", output_filename);
 	    else
@@ -179,7 +176,7 @@ int main(int argc, char **argv) {
 	if ( input_filename == output_filename )
 	    fprintf(stderr, "ERROR: can not read from input filename '%s', Your original file might have been lost.\n", input_filename);
 	else
-	    fprintf(stderr, "ERROR: can not read from input filename '%s' %d\n", input_filename, read_bytes);
+	    fprintf(stderr, "ERROR: can not read from input filename '%s'\n", input_filename);
 	exit(EXIT_FAILURE);
     }
 
