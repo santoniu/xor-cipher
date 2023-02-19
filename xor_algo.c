@@ -8,7 +8,7 @@ unsigned int xor_algo(void *buffer, long long int len, unsigned int xor_key_inte
     if ( buffer == 0 )
 	return XOR_ALGO_ERROR_BUFFER_NULL;
 
-    if ( len <= 0 )
+    if ( len < 0 )
 	return XOR_ALGO_ERROR_BUFFER_INVALID_LENGTH;
 
     if ( xor_key_interval_start > XOR_KEY_LENGTH_IN_BYTES )

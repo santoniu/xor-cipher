@@ -23,8 +23,9 @@ int main(int argc, char **argv) {
     time_t now = time(NULL);
     srand(now);
 
-    /* if optional key length was not specified, generate a random key 
-     * length between 63 and up to 256 bytes.
+    /* 
+     * if optional key length was not specified or it was 0, generate a random
+     * key length between 63 and up to 256 bytes.
      */
     if ( xor_key_length_in_bytes == 0 )
 	xor_key_length_in_bytes = 63 + rand()%194;

@@ -1,6 +1,7 @@
 CFLAGS = -g -O2 -Wall
 CC = $(CROSS_COMPILE)gcc
 STRIP = $(CROSS_COMPILE)strip
+XOR_KEY_LENGTH := $(if $(XOR_KEY_LEN), $(XOR_KEY_LEN), 0)
 
 all:
 	[ -f $(CURDIR)/xor_algo.h ] || make CROSS_COMPILE=$(CROSS_COMPILE) header
@@ -14,7 +15,7 @@ clean:
 
 header: clean
 	$(CC) -o $(CURDIR)/xor_algo_header_generator $(CURDIR)/xor_algo_header_generator.c
-	$(CURDIR)/xor_algo_header_generator > $(CURDIR)/xor_algo.h
+	$(CURDIR)/xor_algo_header_generator -l$(XOR_KEY_LENGTH) > $(CURDIR)/xor_algo.h
 
 install: all
 	[ -d $(INSTALL_DIR) ] || mkdir -p $(INSTALL_DIR)
